@@ -4,13 +4,16 @@ const gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps'),
   babel = require('gulp-babel'),
   cleanCSS = require('gulp-clean-css'),
-  del = require('del');
+  del = require('del'),
+  imageResize = require('gulp-image-resize'),
+  rename = require("gulp-rename");
 
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
 const paths = {
   scripts: 'js/*.js',
   styles: 'css/*.css',
+  images_src: 'img_src/*',
   images: 'img/*',
   html: ['index.html', 'restaurant.html'],
 };
@@ -29,6 +32,10 @@ gulp.task('clean-styles', function() {
 
 gulp.task('clean-images', function() {
   return del(['build/img']);
+});
+
+gulp.task('clean-resized-images', function() {
+  return del([paths.images]);
 });
 
 gulp.task('clean-data', function() {
@@ -60,9 +67,45 @@ gulp.task('styles', ['clean-styles'], function() {
 // Copy all static images
 gulp.task('images', ['clean-images'], function() {
   return gulp.src(paths.images)
-  // Pass in options to the task
     .pipe(imagemin({optimizationLevel: 5}))
     .pipe(gulp.dest('build/img'));
+});
+
+gulp.task('img-resize', ['clean-resized-images'], function() {
+  return gulp.src(paths.images_src)
+    .pipe(imageResize({
+      width : 1000,
+      height : 1000,
+      crop : false,
+      upscale : false,
+      imageMagick: true
+    }))
+    .pipe(rename(function (path) {
+      path.basename += "_large";
+    }))
+    .pipe(gulp.dest('img'))
+    .pipe(imageResize({
+      width : 700,
+      height : 700,
+      crop : false,
+      upscale : false,
+      imageMagick: true
+    }))
+    .pipe(rename(function (path) {
+      path.basename = path.basename.replace('_large', '_medium');
+    }))
+    .pipe(gulp.dest('img'))
+    .pipe(imageResize({
+      width : 350,
+      height : 350,
+      crop : false,
+      upscale : false,
+      imageMagick: true
+    }))
+    .pipe(rename(function (path) {
+      path.basename = path.basename.replace('_medium', '_small');
+    }))
+    .pipe(gulp.dest('img'));
 });
 
 gulp.task('html', ['clean-html'], function() {

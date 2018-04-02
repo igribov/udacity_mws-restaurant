@@ -14,11 +14,14 @@
   "devDependencies": {
     "del": "^3.0.0",
     "gulp-clean-css": "^3.9.3",
-    "gulp-imagemin": "^4.1.0"
+    "gulp-image-resize": "^0.13.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-rename": "^1.2.2"
   },
   "scripts": {
     "build": "node ./node_modules/gulp/bin/gulp.js",
-    "dev": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js dev"
+    "dev": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js dev",
+    "iamges": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js img-resize"
   },
   "repository": {
     "type": "git",
