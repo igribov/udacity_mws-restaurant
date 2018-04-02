@@ -1,0 +1,37 @@
+{
+  "name": "udacity_mws-restaurant-stage-1",
+  "version": "1.0.0",
+  "description": "restaurant project",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0"
+  },
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp-clean-css": "^3.9.3",
+    "gulp-imagemin": "^4.1.0"
+  },
+  "scripts": {
+    "build": "node ./node_modules/gulp/bin/gulp.js",
+    "dev": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igribov/udacity_mws-restaurant-stage-1.git"
+  },
+  "keywords": [
+    "udacity",
+    "restaurant-review"
+  ],
+  "author": "gribov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/igribov/udacity_mws-restaurant-stage-1/issues"
+  },
+  "homepage": "https://github.com/igribov/udacity_mws-restaurant-stage-1#readme"
+}
