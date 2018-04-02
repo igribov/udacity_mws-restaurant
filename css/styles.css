@@ -186,18 +186,27 @@ nav h1 a {
 
 .restaurants-search-result {
     text-align: center;
+    width: 100%;
 }
 
 #restaurants-list li {
+    padding: 0 5px;
     background-color: #fff;
     border: 2px solid #ccc;
     font-family: Arial, sans-serif;
     margin: 10px 0;
     min-height: 380px;
-    padding: 0;
     text-align: center;
     box-shadow: #ddd 5px 4px 4px;
     width: 100%;
+}
+
+#restaurants-list li:focus {
+    box-shadow: orange 5px 5px 5px;
+}
+
+#restaurants-list li:first-child:last-child {
+    width: 50%;
 }
 
 #restaurants-list .restaurant-info p {
@@ -244,6 +253,10 @@ nav h1 a {
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
+}
+
+#restaurants-list li .restaurant-info a:focus {
+    background: red;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -360,6 +373,7 @@ nav h1 a {
 }
 
 #reviews-list .reviews-list-item {
+    padding-top: 20px;
     background-color: #fff;
     border: 2px solid #f3f3f3;
     display: block;
@@ -468,10 +482,49 @@ nav h1 a {
     }
 }
 
+@media screen and (min-width: 458px) {
+    nav h1 {
+        line-height: 5em;
+    }
+}
+
 @media screen and (min-width: 1001px) {
     #restaurants-list li {
         width: 32%;
         margin: 10px auto;
+    }
+
+    #reviews-list .reviews-list-item {
+        padding-top: 0;
+        font-size: 1.2em;
+    }
+
+    .reviews-list-item .reviewer-info__name-date {
+        width: 50%;
+        font-size: 1.2em;
+        display: inline-block;
+    }
+
+    .reviews-list-item .reviewer-info p {
+        display: inline-block;
+        width: 50%;
+    }
+
+    .reviews-list-item .reviewer-info .reviewer-info__name-date h3,
+    .reviews-list-item .reviewer-info .reviewer-info__name-date span,
+    .reviews-list-item .reviewer-info p .rating-number,
+    .reviews-list-item .reviewer-info p .rating-stars {
+        display: inline-block !important;
+        width: 50%;
+
+    }
+
+    .reviewer-comment {
+        text-align: left;
+    }
+
+    .reviews-list-item .reviewer-info p .rating-stars {
+        font-size: 4em !important;
     }
 }
 
@@ -479,5 +532,6 @@ nav h1 a {
     #maincontent {
         max-width: 1000px;
         margin: auto;
+
     }
 }

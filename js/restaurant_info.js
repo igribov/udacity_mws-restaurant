@@ -61,6 +61,7 @@ function fillRestaurantHTML(restaurant = self.restaurant) {
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
+  cuisine.setAttribute('tabindex', '0');
   cuisine.innerHTML = restaurant.cuisine_type;
 
   // fill operating hours

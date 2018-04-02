@@ -137,6 +137,7 @@ function fillRestaurantsHTML (restaurants = self.restaurants) {
  */
 function createRestaurantHTML(restaurant) {
   const li = document.createElement('li');
+  li.setAttribute('tabindex', 0);
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
@@ -149,15 +150,17 @@ function createRestaurantHTML(restaurant) {
 
   const name = document.createElement('h2');
   name.className = 'restaurant-card-name';
-  image.setAttribute('tabindex', '0');
+  name.setAttribute('tabindex', '0');
   name.innerHTML = restaurant.name;
   infoBlock.append(name);
 
   const neighborhood = document.createElement('p');
+  neighborhood.setAttribute('tabindex', 0);
   neighborhood.innerHTML = restaurant.neighborhood;
   infoBlock.append(neighborhood);
 
   const address = document.createElement('p');
+  address.setAttribute('tabindex', 0);
   address.innerHTML = restaurant.address;
   infoBlock.append(address);
 
