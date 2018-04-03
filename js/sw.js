@@ -1,4 +1,4 @@
-var CACHE_VER = 'v7';
+var CACHE_VER = 'v1';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(
@@ -6,7 +6,7 @@ self.addEventListener('install', function (event) {
       .then(function (cache) {
         return cache.addAll([
           '/index.html',
-          '/restaurant.html',
+          '/restaurant.html?id=1',
           '/js/main.js',
           '/js/restaurant_info.js',
           '/js/process.js',
@@ -25,11 +25,9 @@ self.addEventListener('fetch', function(event) {
 
   if (requestUrl.host !== 'localhost:8888') {
     event.respondWith(fetch(event.request));
-
   } else {
-
     event.respondWith(
-      caches.match(event.request).then(function(resp) {
+      caches.match(event.request,{ignoreSearch: true}).then(function(resp) {
         if (event.request.method !== 'GET') {
           return;
         }
@@ -39,10 +37,10 @@ self.addEventListener('fetch', function(event) {
         }
         return fetch(event.request).then(function(response) {
 
-          if ((new RegExp('.json$')).test(requestUrl.pathname)) {
+          /*if ((new RegExp('.json$')).test(requestUrl.pathname)) {
             console.log('IGNORE_JSON');
             return response;
-          }
+          }*/
 
           return caches.open(CACHE_VER).then(function(cache) {
             cache.put(event.request, response.clone());
