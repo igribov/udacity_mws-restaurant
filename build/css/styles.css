@@ -256,7 +256,7 @@ nav h1 a {
 }
 
 #restaurants-list li .restaurant-info a:focus {
-    background: red;
+    background: #f4481b;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -529,9 +529,16 @@ nav h1 a {
 }
 
 @media screen and (min-width: 1200px) {
-    #maincontent {
-        max-width: 1000px;
-        margin: auto;
+    #breadcrumb {
+        padding: 10px 0 16px;
+    }
 
+    #breadcrumb li:first-child {
+        padding-left: 20px;
+    }
+
+    #maincontent, #breadcrumb {
+        max-width: 1200px;
+        margin: auto;
     }
 }
