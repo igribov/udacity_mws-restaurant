@@ -21,7 +21,8 @@
   "scripts": {
     "build": "node ./node_modules/gulp/bin/gulp.js",
     "dev": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js dev",
-    "iamges": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js img-resize"
+    "images": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js img-resize",
+    "serve": "SET NODE_ENV=dev & node ./server/server.js"
   },
   "repository": {
     "type": "git",

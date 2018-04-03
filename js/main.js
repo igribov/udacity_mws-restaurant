@@ -8,6 +8,7 @@ var markers = [];
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+  registerServiceWorker();
   fetchNeighborhoods();
   fetchCuisines();
 });
@@ -86,7 +87,7 @@ window.initMap = () => {
 /**
  * Update page and map for current restaurants.
  */
-function updateRestaurants () {
+function updateRestaurants() {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 
@@ -109,7 +110,7 @@ function updateRestaurants () {
 /**
  * Clear current restaurants, their HTML and remove their map markers.
  */
-function resetRestaurants (restaurants){
+function resetRestaurants(restaurants) {
   // Remove all restaurants
   self.restaurants = [];
   const ul = document.getElementById('restaurants-list');
@@ -124,7 +125,7 @@ function resetRestaurants (restaurants){
 /**
  * Create all restaurants HTML and add them to the webpage.
  */
-function fillRestaurantsHTML (restaurants = self.restaurants) {
+function fillRestaurantsHTML(restaurants = self.restaurants) {
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
