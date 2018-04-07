@@ -6,7 +6,9 @@ self.addEventListener('install', function (event) {
       .then(function (cache) {
         return cache.addAll([
           '/index.html',
-          '/restaurant.html?id=1',
+          '/restaurant.html',
+          '/js/accessibility-select.js',
+          '/js/dbhelper.js',
           '/js/main.js',
           '/js/restaurant_info.js',
           '/js/process.js',

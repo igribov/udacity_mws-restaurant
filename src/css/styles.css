@@ -44,7 +44,7 @@ ul, li {
 }
 
 a {
-    color: orange;
+    color: #3297db;
     text-decoration: none;
 }
 
@@ -79,6 +79,9 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
     padding: 25px;
     text-align: center;
     text-transform: uppercase;
+}
+#footer a {
+    color: #db7b32;
 }
 
 /* ====================== Navigation ====================== */
@@ -158,7 +161,7 @@ nav h1 a {
     color: white;
     font-weight: normal;
     line-height: 1;
-    margin: 0 20px;
+    margin: 10px 20px;
 }
 
 .filter-options select {
@@ -202,7 +205,7 @@ nav h1 a {
 }
 
 #restaurants-list li:focus {
-    box-shadow: orange 5px 5px 5px;
+    box-shadow: #3297db 5px 5px 5px;
 }
 
 #restaurants-list li:first-child:last-child {
@@ -227,7 +230,7 @@ nav h1 a {
 }
 
 #restaurants-list .restaurant-info .restaurant-card-name {
-    color: #f18200;
+    color: #3297db;
     font-family: Arial, sans-serif;
     font-size: 2em;
     font-weight: 200;
@@ -243,7 +246,7 @@ nav h1 a {
 }
 
 #restaurants-list li .restaurant-info a {
-    background-color: orange;
+    background-color: #3297db;
     border-bottom: 3px solid #eee;
     color: #fff;
     display: inline-block;
@@ -256,7 +259,7 @@ nav h1 a {
 }
 
 #restaurants-list li .restaurant-info a:focus {
-    background: #f4481b;
+    background: #f49510;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -316,7 +319,7 @@ nav h1 a {
 }
 
 #restaurant-name {
-    color: #f18200;
+    color: #3297db;
     font-family: Arial, sans-serif;
     font-size: 20pt;
     font-weight: 200;
@@ -433,6 +436,87 @@ nav h1 a {
     border-bottom: none;
 }
 
+.custom-select {
+    margin: 10px;
+}
+.custom-select:focus .custom-select__dropdown {
+    box-shadow: #3297db 0px 0px 10px 7px;
+}
+
+.custom-select__list {
+    list-style: none;
+    display: none;
+}
+
+.custom-select__list.open {
+    display: block;
+    background: #fff;
+    margin: 0;
+    text-align: left;
+    padding: 0;
+    margin-left: 5px;
+    border: 1px solid gray;
+    box-shadow: #252831e3 4px 4px 4px;
+    border-radius: 5px;
+    position: absolute;
+    min-width: 90%;
+    z-index: 9;
+}
+
+.custom-select__list li {
+    font-size: 1.5em;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.custom-select__list li:focus, .custom-select__list li:hover {
+    background: rgba(50, 151, 219, 0.32);
+}
+
+.custom-select__dropdown {
+    border: 1px solid grey;
+    padding: 4px 4px;
+    border-radius: 5px;
+    background: #fff;
+    display: block;
+    text-align: left;
+}
+
+.custom-select__dropdown-button, .custom-select__selected-item-value {
+    display: inline-block;
+}
+
+.custom-select__selected-item-value {
+    width: 80%;
+    padding-left: 10px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.custom-select__dropdown-button {
+    cursor: pointer;
+    padding: 0 2px;
+    color: #3297db;
+    text-align: right;
+    width: 15%;
+}
+
+.custom-select__dropdown-button:after {
+    content: '▼';
+    position: relative;
+    top: 1px;
+}
+
+@media screen and (min-width: 701px) {
+    .custom-select {
+        display: inline-block;
+        width: 45%;
+    }
+    .custom-select__list.open {
+        min-width: 38%;
+    }
+}
+
 @media screen and (max-width: 350px) {
     #restaurants-list li:first-child {
         margin-top: 0;
@@ -444,15 +528,6 @@ nav h1 a {
 }
 
 @media screen and (max-width: 500px) {
-    .search-selects {
-        width: 95%;
-        margin: auto;
-    }
-
-    #filter-container .search-selects select {
-        width: 100%;
-        margin: .5em 0;
-    }
 }
 
 @media screen and (min-width: 801px) {

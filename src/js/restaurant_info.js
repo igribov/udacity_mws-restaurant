@@ -5,7 +5,7 @@ var map;
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  //registerServiceWorker();
+  registerServiceWorker();
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
       console.error(error);
@@ -59,6 +59,7 @@ function fillRestaurantHTML(restaurant = self.restaurant) {
 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img';
+  image.setAttribute('alt', restaurant.name);
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
@@ -87,6 +88,7 @@ function fillRestaurantHoursHTML(operatingHours = self.restaurant.operating_hour
 
     const time = document.createElement('td');
     time.innerHTML = operatingHours[key];
+    time.setAttribute('aria-label', operatingHours[key] + ','); // for screen reader
     row.appendChild(time);
 
     hours.appendChild(row);
@@ -121,6 +123,7 @@ function createReviewHTML(review) {
   const li = document.createElement('li');
   li.setAttribute('tabindex', '0');
   li.className = 'reviews-list-item';
+  li.setAttribute('aria-label', 'review');
 
   const reviewerInfoBlock = document.createElement('div');
   reviewerInfoBlock.className = 'reviewer-info';
@@ -129,9 +132,12 @@ function createReviewHTML(review) {
   reviewerNameDate.className = 'reviewer-info__name-date';
 
   const name = document.createElement('h3');
+  name.setAttribute('tabindex', '0');
+  name.setAttribute('aria-label', review.name);
   name.innerHTML = review.name;
 
   const date = document.createElement('date');
+  date.setAttribute('tabindex', '0');
   date.innerHTML = review.date;
 
   reviewerNameDate.appendChild(name);
@@ -144,6 +150,7 @@ function createReviewHTML(review) {
   li.appendChild(reviewerInfoBlock);
 
   const comments = document.createElement('p');
+  comments.setAttribute('tabindex', '0');
   comments.className = 'reviewer-comment';
   comments.innerHTML = review.comments;
   li.appendChild(comments);
@@ -157,6 +164,7 @@ function createRatingStarsBlock(ratingValue) {
   rating.appendChild((() => {
     let span = document.createElement('span');
     span.className = 'rating-number';
+    span.setAttribute('tabindex', '0');
     span.innerHTML = 'Rating : ' + ratingValue;
     return span;
   })());

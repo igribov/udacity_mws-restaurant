@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,16 +18,14 @@
 
 <main id="maincontent">
 
-  <section id="filter-container">
+  <section id="filter-container" role="search">
     <div class="filter-options">
       <h2 tabindex="0">Filter Results</h2>
       <div class="search-selects">
-        <select aria-label="Neighborhood" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
-          <option value="all">All Neighborhoods</option>
-        </select>
-        <select aria-label="Cuisine" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
-          <option value="all">All Cuisines</option>
-        </select>
+        <div class="custom-select" aria-label="Neighborhood" id="neighborhoods-select" name="neighborhoods">
+        </div>
+        <div class="custom-select" aria-label="Cuisine" id="cuisines-select" name="cuisines">
+        </div>
       </div>
     </div>
   </section>
@@ -40,6 +38,7 @@
 </main>
 
 <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
+<script type="application/javascript" charset="utf-8" src="js/accessibility-select.js"></script>
 <script type="application/javascript" charset="utf-8" src="js/process.js"></script>
 <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
 <script async defer

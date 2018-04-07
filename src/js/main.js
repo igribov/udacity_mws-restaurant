@@ -8,7 +8,7 @@ var markers = [];
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
-  //registerServiceWorker();
+  registerServiceWorker();
   fetchNeighborhoods();
   fetchCuisines();
 });
@@ -31,14 +31,19 @@ function fetchNeighborhoods() {
  * Set neighborhoods HTML.
  */
 function fillNeighborhoodsHTML(neighborhoods = self.neighborhoods) {
-  const select = document.getElementById('neighborhoods-select');
-  neighborhoods.forEach(neighborhood => {
-    const option = document.createElement('option');
-    option.innerHTML = neighborhood;
-    option.value = neighborhood;
-    select.append(option);
-  });
+
+  const select = new AccessibilitySelect(
+    '#neighborhoods-select',
+    {
+      name: 'Neighborhood',
+      label: 'Neighborhood',
+      initialValue: {name: 'All Neighborhoods', value: 'all'},
+      values: self.neighborhoods,
+      onChange: updateRestaurants
+    }
+  );
 }
+
 
 /**
  * Fetch all cuisines and set their HTML.
@@ -58,14 +63,17 @@ function fetchCuisines() {
  * Set cuisines HTML.
  */
 function fillCuisinesHTML(cuisines = self.cuisines) {
-  const select = document.getElementById('cuisines-select');
 
-  cuisines.forEach(cuisine => {
-    const option = document.createElement('option');
-    option.innerHTML = cuisine;
-    option.value = cuisine;
-    select.append(option);
-  });
+  const select = new AccessibilitySelect(
+    '#cuisines-select',
+    {
+      name: 'Cuisines',
+      label: 'Cuisines',
+      initialValue: {name: 'All Cuisines', value: 'all'},
+      values: cuisines,
+      onChange: updateRestaurants
+    }
+  );
 }
 
 /**
@@ -91,11 +99,8 @@ function updateRestaurants() {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 
-  const cIndex = cSelect.selectedIndex;
-  const nIndex = nSelect.selectedIndex;
-
-  const cuisine = cSelect[cIndex].value;
-  const neighborhood = nSelect[nIndex].value;
+  const cuisine = cSelect.getAttribute('data-value');
+  const neighborhood = nSelect.getAttribute('data-value');
 
   DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
     if (error) { // Got an error!

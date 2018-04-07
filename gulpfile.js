@@ -11,12 +11,12 @@ const gulp = require('gulp'),
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
 const paths = {
-  scripts: ['js/process.js', 'js/main.js', 'js/restaurant_info.js', 'js/dbhelper.js'],
-  sw: ['js/sw.js'],
-  styles: 'css/*.css',
-  images_src: 'img_src/*',
-  images: 'img/*',
-  html: ['index.html', 'restaurant.html'],
+  scripts: ['src/js/process.js', 'src/js/accessibility-select.js', 'src/js/main.js', 'src/js/restaurant_info.js', 'src/js/dbhelper.js'],
+  sw: ['src/js/sw.js'],
+  styles: 'src/css/*.css',
+  images_src: 'src/img_src/*',
+  images: 'src/img/*',
+  html: ['src/index.html', 'src/restaurant.html'],
 };
 
 gulp.task('clean-html', function () {

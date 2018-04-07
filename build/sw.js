@@ -4,7 +4,7 @@ var CACHE_VER = 'v1';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(CACHE_VER).then(function (cache) {
-    return cache.addAll(['/index.html', '/restaurant.html?id=1', '/js/main.js', '/js/restaurant_info.js', '/js/process.js', '/css/styles.css']);
+    return cache.addAll(['/index.html', '/restaurant.html', '/js/accessibility-select.js', '/js/dbhelper.js', '/js/main.js', '/js/restaurant_info.js', '/js/process.js', '/css/styles.css']);
   }).catch(function (error) {
     console.log('Error', error);
     throw error;
