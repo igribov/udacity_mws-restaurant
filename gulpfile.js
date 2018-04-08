@@ -129,7 +129,7 @@ gulp.task('html', ['clean-html'], function () {
 });
 
 gulp.task('data', ['clean-data'], function () {
-  return gulp.src(['data/*'])
+  return gulp.src(['src/data/*'])
     .pipe(gulp.dest('build/data'));
 });
 
