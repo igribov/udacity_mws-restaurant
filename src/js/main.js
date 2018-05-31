@@ -89,6 +89,10 @@ window.initMap = () => {
     scrollwheel: false
   });
   updateRestaurants();
+
+  setTimeout(function() {
+    document.getElementById('map').querySelector('iframe').setAttribute('title', 'Google map');
+  }, 200);
 };
 
 /**

@@ -72,8 +72,8 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 
 #footer {
-    background-color: #444;
-    color: #aaa;
+    background-color: #fff;
+    color: #1c1c1c;
     font-size: 1em;
     letter-spacing: 1px;
     padding: 25px;
@@ -81,7 +81,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
     text-transform: uppercase;
 }
 #footer a {
-    color: #db7b32;
+    color: #1c1c1c;
 }
 
 /* ====================== Navigation ====================== */
@@ -246,7 +246,7 @@ nav h1 a {
 }
 
 #restaurants-list li .restaurant-info a {
-    background-color: #3297db;
+    background-color: #005893;
     border-bottom: 3px solid #eee;
     color: #fff;
     display: inline-block;

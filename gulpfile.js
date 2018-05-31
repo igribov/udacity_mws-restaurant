@@ -34,10 +34,16 @@ const paths = {
   images_src: 'src/img_src/*',
   images: 'src/img/*',
   html: ['src/index.html', 'src/restaurant.html'],
+  manifest: ['src/manifest.json'],
 };
 
 gulp.task('clean-html', function () {
   return del(['build/*.html']);
+});
+
+
+gulp.task('clean-manifest', function () {
+  return del(['build/manifest.json']);
 });
 
 gulp.task('clean-scripts', function () {
@@ -182,6 +188,11 @@ gulp.task('html', ['clean-html'], function () {
     .pipe(gulp.dest('build'));
 });
 
+gulp.task('manifest', ['clean-manifest'], function () {
+  return gulp.src(paths.manifest)
+    .pipe(gulp.dest('build'));
+});
+
 gulp.task('data', ['clean-data'], function () {
   return gulp.src(['src/data/*'])
     .pipe(gulp.dest('build/data'));
@@ -192,8 +203,9 @@ gulp.task('watch', function () {
   gulp.watch(paths.sw, ['sw']);
   gulp.watch(paths.styles, ['styles']);
   gulp.watch(paths.html, ['html']);
+  gulp.watch(paths.manifest, ['manifest']);
 });
 
-gulp.task('default', ['scripts2','sw', 'styles', 'html', 'data', 'images']);
+gulp.task('default', ['scripts2','sw', 'styles', 'html', 'manifest', 'data', 'images']);
 
-gulp.task('dev', ['scripts2','sw', 'styles', 'html', 'data', 'images', 'watch']);
+gulp.task('dev', ['scripts2','sw', 'styles', 'html', 'manifest', 'data', 'images', 'watch']);

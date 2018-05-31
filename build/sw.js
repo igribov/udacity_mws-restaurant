@@ -1,6 +1,6 @@
 'use strict';
 
-var CACHE_VER = 'v4';
+var CACHE_VER = 'v1';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(CACHE_VER).then(function (cache) {
@@ -28,12 +28,6 @@ self.addEventListener('fetch', function (event) {
         return resp;
       }
       return fetch(event.request).then(function (response) {
-
-        /*if ((new RegExp('.json$')).test(requestUrl.pathname)) {
-          console.log('IGNORE_JSON');
-          return response;
-        }*/
-
         return caches.open(CACHE_VER).then(function (cache) {
           cache.put(event.request, response.clone());
           return response;
