@@ -26,6 +26,7 @@
   },
   "scripts": {
     "build": "node ./node_modules/gulp/bin/gulp.js",
+    "build-watch": "node ./node_modules/gulp/bin/gulp.js dev",
     "dev": "NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js dev",
     "images": "NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js img-resize"
   },

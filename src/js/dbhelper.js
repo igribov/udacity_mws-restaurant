@@ -157,25 +157,18 @@ class DBHelper {
   /**
    * Fetch all neighborhoods with proper error handling.
    */
-  static fetchNeighborhoods() {
+  static fetchNeighborhoodsAndCuisines() {
     // Fetch all restaurants
     return DBHelper.fetchRestaurants().then(restaurants => {
-      const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
-      // Remove duplicates from neighborhoods
-      return neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i);
-    });
-  }
-
-  /**
-   * Fetch all cuisines with proper error handling.
-   */
-  static fetchCuisines() {
-    // Fetch all restaurants
-    return DBHelper.fetchRestaurants().then(restaurants => {
+      const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
       // Get all cuisines from all restaurants
-      const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
-      // Remove duplicates from cuisines
-      return cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+      const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
+
+      // Remove duplicates from neighborhoods
+      return {
+        neighborhoods: neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i),
+        cuisines: cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+      };
     });
   }
 

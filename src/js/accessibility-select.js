@@ -40,7 +40,6 @@ function AccessibilitySelect(selector, options = {}) {
   option.innerHTML = options.initialValue.name;
   option.setAttribute('data-value', options.initialValue.value);
   option.addEventListener('click', (e) => {
-    console.log(1);
     this.onListElementClick.bind(this)(e);
   });
   this.itemsList.append(option);
@@ -91,13 +90,14 @@ AccessibilitySelect.prototype = {
       return;
 
     this.activeItemIdx = selectedElementIndex;
-    this.setSelectedElement(this.itemsList.children[this.activeItemIdx]);
+    this.setSelectedElement(this.itemsList.children[this.activeItemIdx], true);
     this.closeDropDown();
   },
 
-  setSelectedElement(element) {
-    if (!element)
+  setSelectedElement(element, triggerEvent = false) {
+    if (!element) {
       return;
+    }
 
     const value = element.getAttribute('data-value');
     this.selectedValueBlock.setAttribute('data-value', value);
@@ -108,7 +108,9 @@ AccessibilitySelect.prototype = {
     }
     element.setAttribute('aria-selected', 'true');
     this.select.setAttribute('aria-activedescendant', element.id);
-    this.onChange();
+    if (triggerEvent) {
+      this.onChange();
+    }
   },
 
   handleKeyDown(e) {

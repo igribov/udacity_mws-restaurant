@@ -7,27 +7,15 @@ let restaurants,
   cuisines;
 var map;
 var markers = [];
+var scrolled = false;
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
   process.registerServiceWorker();
-  fetchNeighborhoods();
-  fetchCuisines();
+  fetchNeighborhoodsAndCuisines();
 });
-
-/**
- * Fetch all neighborhoods and set their HTML.
- */
-function fetchNeighborhoods() {
-  DBHelper.fetchNeighborhoods().then(neighborhoods => {
-    self.neighborhoods = neighborhoods;
-    fillNeighborhoodsHTML();
-  }).catch(error => {
-    console.error('fetchNeighborhoods error', error);
-  })
-}
 
 /**
  * Set neighborhoods HTML.
@@ -49,10 +37,15 @@ function fillNeighborhoodsHTML(neighborhoods = self.neighborhoods) {
 /**
  * Fetch all cuisines and set their HTML.
  */
-function fetchCuisines() {
-  DBHelper.fetchCuisines().then(cuisines => {
+function fetchNeighborhoodsAndCuisines() {
+  DBHelper.fetchNeighborhoodsAndCuisines().then(({ neighborhoods, cuisines }) => {
+
+    self.neighborhoods = neighborhoods;
+    fillNeighborhoodsHTML();
+
     self.cuisines = cuisines;
     fillCuisinesHTML();
+
   }).catch(error => {
     console.error(error);
   })
@@ -88,7 +81,13 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
-  updateRestaurants();
+
+  window.addEventListener('scroll', () => {
+    if (!scrolled) {
+      scrolled = true;
+      updateRestaurants();
+    }
+  });
 
   setTimeout(function() {
     document.getElementById('map').querySelector('iframe').setAttribute('title', 'Google map');
