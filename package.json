@@ -8,20 +8,26 @@
     "babel-preset-env": "^1.6.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
+    "gulp-requirejs": "^1.1.1",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0"
+    "gulp-uglify": "^3.0.0",
+    "idb": "^2.1.2"
   },
   "devDependencies": {
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
     "del": "^3.0.0",
     "gulp-clean-css": "^3.9.3",
     "gulp-image-resize": "^0.13.0",
     "gulp-imagemin": "^4.1.0",
-    "gulp-rename": "^1.2.2"
+    "gulp-rename": "^1.2.2",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "scripts": {
     "build": "node ./node_modules/gulp/bin/gulp.js",
-    "dev": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js dev",
-    "images": "SET NODE_ENV=dev & node ./node_modules/gulp/bin/gulp.js img-resize"
+    "dev": "NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js dev",
+    "images": "NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js img-resize"
   },
   "repository": {
     "type": "git",

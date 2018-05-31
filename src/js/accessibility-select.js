@@ -166,3 +166,5 @@ AccessibilitySelect.prototype = {
     this.activeItemIdx = prevElementIndex;
   }
 };
+
+module.exports = AccessibilitySelect;

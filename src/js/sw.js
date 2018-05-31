@@ -1,4 +1,4 @@
-var CACHE_VER = 'v2';
+var CACHE_VER = 'v4';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(
@@ -7,11 +7,8 @@ self.addEventListener('install', function (event) {
         return cache.addAll([
           '/index.html',
           '/restaurant.html',
-          '/js/accessibility-select.js',
-          '/js/dbhelper.js',
           '/js/main.js',
           '/js/restaurant_info.js',
-          '/js/process.js',
           '/css/styles.css'
         ]);
       })
@@ -24,8 +21,10 @@ self.addEventListener('install', function (event) {
 
 self.addEventListener('fetch', function(event) {
   var requestUrl = new URL(event.request.url);
-
+  console.log('requestUrl.host ', requestUrl.host );
   if (requestUrl.host !== 'localhost:8888') {
+    event.respondWith(fetch(event.request));
+  } else if (requestUrl.host === 'localhost:1337') {
     event.respondWith(fetch(event.request));
   } else {
     event.respondWith(

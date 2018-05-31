@@ -81,3 +81,7 @@ function sendMessageToServiceWorker(msg, worker) {
     worker.postMessage(msg, [msgChan.port2]);
   });
 }
+
+module.exports = {
+  registerServiceWorker,
+};

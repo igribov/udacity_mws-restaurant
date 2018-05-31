@@ -6,12 +6,29 @@ const gulp = require('gulp'),
   cleanCSS = require('gulp-clean-css'),
   del = require('del'),
   imageResize = require('gulp-image-resize'),
-  rename = require("gulp-rename");
+  rename = require("gulp-rename"),
+  es = require('event-stream'),
+  path = require('path');
+
+const browserify = require('browserify');
+const babelify = require('babelify');
+const buffer = require('vinyl-buffer');
+const source = require('vinyl-source-stream');
 
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
 const paths = {
-  scripts: ['src/js/process.js', 'src/js/accessibility-select.js', 'src/js/main.js', 'src/js/restaurant_info.js', 'src/js/dbhelper.js'],
+  scripts: [
+    'src/js/process.js',
+    'src/js/accessibility-select.js',
+    'src/js/main.js',
+    'src/js/dbhelper.js',
+    'src/js/restaurant_info.js',
+  ],
+  entries: [
+    'src/js/main.js',
+    'src/js/restaurant_info.js',
+  ],
   sw: ['src/js/sw.js'],
   styles: 'src/css/*.css',
   images_src: 'src/img_src/*',
@@ -47,6 +64,42 @@ gulp.task('clean-data', function () {
   return del(['build/data']);
 });
 
+
+
+gulp.task('scripts2', ['clean-scripts'], function () {
+
+  const tasks = paths.entries.map(function(entry) {
+    const browserifyObj = browserify({
+      entries: [entry],
+      transform: babelify,
+      debug: true
+    });
+
+    const process = browserifyObj.bundle()
+      .pipe(source(path.basename(entry, '.js')))
+      .pipe(rename({
+        extname: '.js'
+      }))
+      .pipe(buffer());
+
+    if (NODE_ENV !== 'production') {
+      process.pipe(sourcemaps.init());
+    }
+    process.pipe(babel({
+      presets: ['env']
+    }))
+    .pipe(uglify());
+
+    if (NODE_ENV !== 'production') {
+      process.pipe(sourcemaps.write());
+    }
+    process.pipe(gulp.dest('build/js'));
+    return process;
+  });
+
+  return es.merge.apply(null, tasks);
+});
+
 gulp.task('scripts', ['clean-scripts'], function () {
   const process = gulp.src(paths.scripts);
   if (NODE_ENV !== 'production') {
@@ -62,6 +115,7 @@ gulp.task('scripts', ['clean-scripts'], function () {
   }
   return process.pipe(gulp.dest('build/js'));
 });
+
 
 gulp.task('sw', ['clean-sw'], function () {
   return gulp.src(paths.sw)
@@ -134,12 +188,12 @@ gulp.task('data', ['clean-data'], function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(paths.scripts, ['scripts']);
+  gulp.watch(paths.scripts, ['scripts2']);
   gulp.watch(paths.sw, ['sw']);
   gulp.watch(paths.styles, ['styles']);
   gulp.watch(paths.html, ['html']);
 });
 
-gulp.task('default', ['scripts','sw', 'styles', 'html', 'data', 'images']);
+gulp.task('default', ['scripts2','sw', 'styles', 'html', 'data', 'images']);
 
-gulp.task('dev', ['scripts','sw', 'styles', 'html', 'data', 'images', 'watch']);
+gulp.task('dev', ['scripts2','sw', 'styles', 'html', 'data', 'images', 'watch']);

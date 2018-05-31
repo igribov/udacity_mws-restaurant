@@ -1,3 +1,6 @@
+const DBHelper = require('./dbhelper');
+const process = require('./process');
+
 let restaurant;
 var map;
 
@@ -5,43 +8,39 @@ var map;
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  registerServiceWorker();
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
-      fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
+  process.registerServiceWorker();
+  fetchRestaurantFromURL().then(restaurant => {
+    self.map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: restaurant.latlng,
+      scrollwheel: false
+    });
+    fillBreadcrumb();
+    DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+
+  }).catch(err => {
+    console.error(err);
   });
-}
+};
 
 /**
  * Get current restaurant from page URL.
  */
-function fetchRestaurantFromURL(callback) {
+function fetchRestaurantFromURL() {
   if (self.restaurant) { // restaurant already fetched!
-    callback(null, self.restaurant)
-    return;
+    return self.restaurant;
   }
   const id = getParameterByName('id');
   if (!id) { // no id found in URL
-    error = 'No restaurant id in URL'
-    callback(error, null);
+    throw new Error('No restaurant id in URL');
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    return DBHelper.fetchRestaurantById(id).then((restaurant) => {
       self.restaurant = restaurant;
       if (!restaurant) {
-        console.error(error);
-        return;
+        throw new Error('No restaurant');
       }
       fillRestaurantHTML();
-      callback(null, restaurant)
+      return restaurant;
     });
   }
 }
