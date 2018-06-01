@@ -10,11 +10,16 @@ var map;
 window.initMap = () => {
   process.registerServiceWorker();
   fetchRestaurantFromURL().then(restaurant => {
+    self.restaurant = restaurant;
+
+    fillRestaurantHTML();
+
     self.map = new google.maps.Map(document.getElementById('map'), {
       zoom: 16,
       center: restaurant.latlng,
       scrollwheel: false
     });
+
     fillBreadcrumb();
     DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
 
@@ -35,11 +40,11 @@ function fetchRestaurantFromURL() {
     throw new Error('No restaurant id in URL');
   } else {
     return DBHelper.fetchRestaurantById(id).then((restaurant) => {
-      self.restaurant = restaurant;
+
       if (!restaurant) {
         throw new Error('No restaurant');
       }
-      fillRestaurantHTML();
+
       return restaurant;
     });
   }

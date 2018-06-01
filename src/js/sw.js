@@ -1,4 +1,4 @@
-var CACHE_VER = 'v12';
+var CACHE_VER = 'v13';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(
@@ -11,6 +11,7 @@ self.addEventListener('install', function (event) {
           '/js/restaurant_info.js',
           '/css/home.css',
           '/css/detail.css',
+          '/css/common.css',
         ]);
       })
       .catch(function (error) {

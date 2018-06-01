@@ -1,10 +1,10 @@
 'use strict';
 
-var CACHE_VER = 'v12';
+var CACHE_VER = 'v13';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(CACHE_VER).then(function (cache) {
-    return cache.addAll(['/index.html', '/restaurant.html', '/js/main.js', '/js/restaurant_info.js', '/css/home.css', '/css/detail.css']);
+    return cache.addAll(['/index.html', '/restaurant.html', '/js/main.js', '/js/restaurant_info.js', '/css/home.css', '/css/detail.css', '/css/common.css']);
   }).catch(function (error) {
     throw error;
   }));
