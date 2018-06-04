@@ -8,7 +8,8 @@ const gulp = require('gulp'),
   imageResize = require('gulp-image-resize'),
   rename = require("gulp-rename"),
   es = require('event-stream'),
-  path = require('path');
+  path = require('path'),
+  template = require('gulp-template');
 
 const browserify = require('browserify');
 const babelify = require('babelify');
@@ -70,9 +71,16 @@ gulp.task('clean-data', function () {
   return del(['build/data']);
 });
 
+gulp.task('sw', ['clean-sw'], function () {
+  return gulp.src(paths.sw)
+    .pipe(template({ sw_version: 'v' + new Date().getTime() }))
+    .pipe(babel({
+      presets: ['env']
+    }))
+    .pipe(gulp.dest('build'));
+});
 
-
-gulp.task('scripts2', ['clean-scripts'], function () {
+gulp.task('scripts', ['clean-scripts'], function () {
 
   const tasks = paths.entries.map(function(entry) {
     const browserifyObj = browserify({
@@ -104,31 +112,6 @@ gulp.task('scripts2', ['clean-scripts'], function () {
   });
 
   return es.merge.apply(null, tasks);
-});
-
-gulp.task('scripts', ['clean-scripts'], function () {
-  const process = gulp.src(paths.scripts);
-  if (NODE_ENV !== 'production') {
-    process.pipe(sourcemaps.init());
-  }
-  process.pipe(babel({
-      presets: ['env']
-    }))
-    .pipe(uglify());
-
-  if (NODE_ENV !== 'production') {
-    process.pipe(sourcemaps.write());
-  }
-  return process.pipe(gulp.dest('build/js'));
-});
-
-
-gulp.task('sw', ['clean-sw'], function () {
-  return gulp.src(paths.sw)
-    .pipe(babel({
-      presets: ['env']
-    }))
-    .pipe(gulp.dest('build'));
 });
 
 gulp.task('styles', ['clean-styles'], function () {
@@ -199,13 +182,13 @@ gulp.task('data', ['clean-data'], function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(paths.scripts, ['scripts2']);
+  gulp.watch(paths.scripts, ['sw', 'scripts']);
   gulp.watch(paths.sw, ['sw']);
   gulp.watch(paths.styles, ['styles']);
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.manifest, ['manifest']);
 });
 
-gulp.task('default', ['scripts2','sw', 'styles', 'html', 'manifest', 'data', 'images']);
+gulp.task('default', ['scripts','sw', 'styles', 'html', 'manifest', 'data', 'images']);
 
-gulp.task('dev', ['scripts2','sw', 'styles', 'html', 'manifest', 'data', 'images', 'watch']);
+gulp.task('dev', ['scripts','sw', 'styles', 'html', 'manifest', 'data', 'images', 'watch']);

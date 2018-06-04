@@ -1,4 +1,4 @@
-var CACHE_VER = 'v13';
+const CACHE_VER = '<%= sw_version %>';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(

@@ -181,7 +181,6 @@ function createRatingStarsBlock(ratingValue) {
   const ratingStarsElement = document.createElement('span');
   ratingStarsElement.className = 'rating-stars';
   ratingStarsElement.innerHTML = ratingStars;
-
   rating.appendChild(ratingStarsElement);
 
   return rating;
