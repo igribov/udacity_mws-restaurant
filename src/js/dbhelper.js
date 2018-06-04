@@ -167,7 +167,8 @@ class DBHelper {
       // Remove duplicates from neighborhoods
       return {
         neighborhoods: neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i),
-        cuisines: cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+        cuisines: cuisines.filter((v, i) => cuisines.indexOf(v) == i),
+        restaurants,
       };
     });
   }

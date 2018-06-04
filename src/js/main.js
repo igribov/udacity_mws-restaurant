@@ -13,8 +13,11 @@ var scrolled = false;
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+  console.log('DOMContentLoaded');
   process.registerServiceWorker();
-  fetchNeighborhoodsAndCuisines();
+  fetchNeighborhoodsAndCuisines().then((restaurants) => {
+    fillRestaurantsHTML(restaurants);
+  })
 });
 
 /**
@@ -38,17 +41,19 @@ function fillNeighborhoodsHTML(neighborhoods = self.neighborhoods) {
  * Fetch all cuisines and set their HTML.
  */
 function fetchNeighborhoodsAndCuisines() {
-  DBHelper.fetchNeighborhoodsAndCuisines().then(({ neighborhoods, cuisines }) => {
+  return DBHelper.fetchNeighborhoodsAndCuisines().then(({ restaurants, neighborhoods, cuisines }) => {
 
     self.neighborhoods = neighborhoods;
-    fillNeighborhoodsHTML();
+    fillNeighborhoodsHTML(neighborhoods);
 
     self.cuisines = cuisines;
-    fillCuisinesHTML();
+    fillCuisinesHTML(cuisines);
+
+    return restaurants;
 
   }).catch(error => {
     console.error(error);
-  })
+  });
 }
 
 /**
@@ -72,6 +77,7 @@ function fillCuisinesHTML(cuisines = self.cuisines) {
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
+
   let loc = {
     lat: 40.722216,
     lng: -73.987501
@@ -85,7 +91,7 @@ window.initMap = () => {
   window.addEventListener('scroll', () => {
     if (!scrolled) {
       scrolled = true;
-      updateRestaurants();
+      // updateRestaurants();
     }
   });
 
@@ -106,7 +112,7 @@ function updateRestaurants() {
 
   DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood).then(restaurants => {
     resetRestaurants(restaurants);
-    fillRestaurantsHTML();
+    fillRestaurantsHTML(restaurants);
   }).catch(error => {
     console.error(error);
   })
@@ -133,11 +139,12 @@ function resetRestaurants(restaurants) {
  * Create all restaurants HTML and add them to the webpage.
  */
 function fillRestaurantsHTML(restaurants = self.restaurants) {
+
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
-  addMarkersToMap();
+  addMarkersToMap(restaurants);
 }
 
 /**
@@ -191,6 +198,9 @@ function addMarkersToMap(restaurants = self.restaurants) {
     google.maps.event.addListener(marker, 'click', () => {
       window.location.href = marker.url
     });
+    if (!self.markers) {
+      self.markers = [];
+    }
     self.markers.push(marker);
   });
 }
