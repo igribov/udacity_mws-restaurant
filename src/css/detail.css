@@ -245,6 +245,79 @@
     top: 1px;
 }
 
+.add-review-container {
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+}
+.review-form-container {
+    font-size: 1.5em;
+    text-align: left;
+    padding: 5%;
+    background-color: #fff;
+    margin: 2% 0;
+    border: 1px solid #fff;
+}
+
+.form > .form-group > h1,
+.form > .form-group > h2,
+.form > .form-group > h3,
+.form > .form-group > h4,
+.form > .form-group > h5 {
+    text-align: center;
+}
+
+.form > .form-group {
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.form > .form-group > input,
+.form > .form-group > textarea {
+    font-size: 1em;
+}
+
+.form > .form-group > label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form > .form-group > input {
+    width: 100%;
+    border: 1px solid grey;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.form > .form-group > textarea {
+    border: 1px solid grey;
+    border-radius: 5px;
+    min-width: 98%;
+    max-width: 400px;
+    min-height: 100px;
+    max-height: 200px;
+    padding: 10px;
+}
+
+.form > .form-group > button[type="submit"] {
+    border: 1px solid grey;
+    border-radius: 3px;
+    padding: 5px 25px;
+    box-shadow: 2px 4px 6px #6f6a6a;
+    font-size: 1em;
+    color: #fff;
+    background-color: #f4911f;
+}
+
+.form > .form-group > button[type="submit"]:active {
+    box-shadow: 0 0 0 #6f6a6a;
+    position: relative;
+    top: 2px;
+    left: 2px;
+    outline: none;
+}
+
 @media screen and (min-width: 701px) {
     .custom-select {
         display: inline-block;
@@ -252,6 +325,10 @@
     }
     .custom-select__list.open {
         min-width: 38%;
+    }
+    .add-review-container {
+        width: 80%;
+        margin: auto;
     }
 }
 
@@ -338,6 +415,11 @@
 
     .reviews-list-item .reviewer-info p .rating-stars {
         font-size: 4em !important;
+    }
+
+    .add-review-container {
+        width: 60%;
+        margin: auto;
     }
 }
 

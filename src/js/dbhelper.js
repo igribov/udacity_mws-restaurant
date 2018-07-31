@@ -1,4 +1,4 @@
-const idb  = require('idb');
+const idb = require('idb');
 const APP_DB_NAME = 'restaurants-db';
 const DB_RESTAURANTS_TABLE = 'restaurants';
 const APP_DB_VER = 1;
@@ -38,23 +38,37 @@ class DBHelper {
   }
 
   /**
+   * Fetch restaurant by id with reviews.
+   */
+  static fetchRestaurantWithReviews(id) {
+    return Promise.all([
+      this.fetchRestaurant(id),
+      this.fetchRestaurantReviews(id)
+    ]).then(([ restaurant, reviews ]) => {
+      restaurant.reviews = reviews;
+      return this.putRestaurantIntoIndexedDb(restaurant).then(() => restaurant);
+    }).catch(err => {
+      return DBHelper.fetchRestaurantFromIndexedDb(id).then(restaurant => {
+        if (!restaurant) {
+          throw new Error('Fetch error');
+        } else {
+          return restaurant;
+        }
+      });
+    });
+  }
+
+  /**
    * Fetch all restaurant.
    */
   static fetchRestaurant(id) {
     return fetch(`${DBHelper.DATABASE_URL}/restaurants/${id}`)
-      .then(data => data.json())
-      .then(restaurant => {
-        return this.putRestaurantIntoIndexedDb(restaurant).then(() => restaurant);
-      })
-      .catch(err => {
-        return DBHelper.fetchRestaurantFromIndexedDb(id).then(restaurant => {
-          if (!restaurant) {
-            throw new Error('Fetch error');
-          } else {
-            return restaurant;
-          }
-        })
-      })
+      .then(data => data.json());
+  }
+
+  static fetchRestaurantReviews(restaurantId) {
+    return fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${restaurantId}`)
+      .then(data => data.json());
   }
 
   static fetchRestaurantsFromIndexedDb() {
@@ -110,9 +124,7 @@ class DBHelper {
    */
   static fetchRestaurantById(id) {
     // fetch all restaurants with proper error handling.
-    return DBHelper.fetchRestaurant(id).then(restaurant => {
-      return restaurant
-    });
+    return DBHelper.fetchRestaurantWithReviews(id);
   }
 
   /**
@@ -199,11 +211,12 @@ class DBHelper {
    */
   static mapMarkerForRestaurant(restaurant, map) {
     const marker = new google.maps.Marker({
-      position: restaurant.latlng,
-      title: restaurant.name,
-      url: DBHelper.urlForRestaurant(restaurant),
-      map: map,
-      animation: google.maps.Animation.DROP}
+        position: restaurant.latlng,
+        title: restaurant.name,
+        url: DBHelper.urlForRestaurant(restaurant),
+        map: map,
+        animation: google.maps.Animation.DROP
+      }
     );
     return marker;
   }

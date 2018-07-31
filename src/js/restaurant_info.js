@@ -1,8 +1,11 @@
 const DBHelper = require('./dbhelper');
 const process = require('./process');
+const RatingSelect = require('./rating-select');
 
 let restaurant;
 var map;
+
+createRatingSelect();
 
 /**
  * Initialize Google map, called from HTML.
@@ -142,7 +145,7 @@ function createReviewHTML(review) {
 
   const date = document.createElement('date');
   date.setAttribute('tabindex', '0');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.updatedAt).toDateString();
 
   reviewerNameDate.appendChild(name);
   reviewerNameDate.appendChild(date);
@@ -195,6 +198,14 @@ function fillBreadcrumb(restaurant=self.restaurant) {
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
 }
+
+function createRatingSelect() {
+  const select = new RatingSelect('#rating-select', {
+    label: 'Rating',
+    max: 5,
+  });
+}
+
 /**
  * Get a parameter by name from page URL.
  */

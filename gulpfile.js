@@ -22,6 +22,7 @@ const paths = {
   scripts: [
     'src/js/process.js',
     'src/js/accessibility-select.js',
+    'src/js/rating-select.js',
     'src/js/main.js',
     'src/js/dbhelper.js',
     'src/js/restaurant_info.js',
