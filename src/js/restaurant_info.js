@@ -6,6 +6,7 @@ let restaurant;
 var map;
 
 createRatingSelect();
+ratingForm();
 
 /**
  * Initialize Google map, called from HTML.
@@ -204,6 +205,17 @@ function createRatingSelect() {
     label: 'Rating',
     max: 5,
   });
+}
+
+function ratingForm() {
+  const form = document.getElementById('send-rating-form');
+  if (!form) {
+    return;
+  }
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    console.log('FOrm submited', e.target.elements);
+  }
 }
 
 /**
