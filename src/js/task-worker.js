@@ -3,10 +3,8 @@ const port = 1337; // Change this to your server port
 const DATABASE_URL = `http://localhost:${port}`;
 
 onmessage = function({ data: { id, action, payload }}) {
-  console.log('Message received from main script', action, payload);
 
   switch (action) {
-
     case 'save_review':
       let offlineMessageSend = false;
       let timerId = setInterval(function() {

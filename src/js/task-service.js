@@ -11,9 +11,9 @@ function TaskService() {
         document.dispatchEvent(statusEvent);
         break;
       case 'save_review':
-        console.log('this.worker.onmessage', id, action, result);
         if (this.workerCallbacks[id]) {
           this.workerCallbacks[id](result);
+          delete this.workerCallbacks[id];
         }
         break;
     }
@@ -28,11 +28,6 @@ TaskService.prototype = {
 
   saveReview(review, callback) {
     this.jobId = this.jobId + 1;
-    // first step: save into indexedDB
-    DBHelper.fetchRestaurantFromIndexedDb(review.restaurant_id).then(restaurant => {
-      restaurant.reviews.push(review);
-      DBHelper.putRestaurantIntoIndexedDb(restaurant);
-    });
 
     // then send data to API
     this.worker.postMessage({

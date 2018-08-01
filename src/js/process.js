@@ -1,8 +1,6 @@
 /* Register service worker with events */
 function registerServiceWorker() {
 
-  return;
-
   if (!'serviceWorker' in navigator) {
     throw new Error('serviceWorker not register');
   }

@@ -6,8 +6,9 @@ const RatingSelect = require('./rating-select');
 let restaurant;
 var map;
 const taskService = new TaskService();
+const statusBar = document.getElementById('server-status-bar');
 
-const statusBar = createStatusBar();
+process.registerServiceWorker();
 
 document.addEventListener('serverstatus', function (e) {
   statusBar.classList.toggle('-online', e.detail.online);
@@ -19,33 +20,27 @@ ratingForm();
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  process.registerServiceWorker();
-  fetchRestaurantFromURL().then(restaurant => {
-    self.restaurant = restaurant;
-
-    fillRestaurantHTML();
-
+  setTimeout(() => {
     self.map = new google.maps.Map(document.getElementById('map'), {
       zoom: 16,
-      center: restaurant.latlng,
+      center: self.restaurant.latlng,
       scrollwheel: false
     });
-
-    fillBreadcrumb();
-    DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-
-  }).catch(err => {
-    console.error(err);
-  });
+  }, 200);
 };
 
-function createStatusBar() {
-  const bar = document.createElement('div');
-  bar.className = 'server-status-bar -online';
-  document.body.appendChild(bar);
+fetchRestaurantFromURL().then(restaurant => {
+  self.restaurant = restaurant;
 
-  return bar;
-}
+  fillRestaurantHTML();
+
+  fillBreadcrumb();
+  DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+
+}).catch(err => {
+  console.error(err);
+});
+
 
 /**
  * Get current restaurant from page URL.
@@ -239,31 +234,60 @@ function ratingForm() {
 
   form.onsubmit = function(e) {
     e.preventDefault();
-    const values = e.target.elements;
-    addComment(values);
+    const {
+      name: { value : name },
+      rating: { value : rating },
+      comments: { value : comments }
+    } = e.target.elements;
+
+    Array.prototype.map.call(
+      document.querySelectorAll('#send-rating-form .form-group'),
+      el => el.classList.remove('has-error')
+    );
+
+    let valid = true;
+
+    if (!name.trim()) {
+      const field = document.querySelector('[data-field="name"]');
+      field.parentElement.classList.add('has-error');
+      field.innerHTML = 'Enter your name';
+      valid = false;
+    }
+    if (rating <= 0) {
+      const field = document.querySelector('[data-field="rating"]');
+      field.parentElement.classList.add('has-error');
+      field.innerHTML = 'Set rating';
+      valid = false;
+    }
+    if (!comments.trim()) {
+      const field = document.querySelector('[data-field="comments"]');
+      field.parentElement.classList.add('has-error');
+      field.innerHTML = 'Enter comment';
+      valid = false;
+    }
+
+    if (!valid) {
+      return;
+    }
+
+    const curDate = (new Date()).getTime();
+
+    const review = {
+      restaurant_id: self.restaurant.id,
+      name,
+      rating,
+      comments,
+      createdAt: curDate,
+      updatedAt: curDate,
+    };
+
+    addReviewComment(review);
     form.reset();
     select.reset();
   }
 }
 
-function addComment(elements) {
-  const {
-    name: { value : name },
-    rating: { value : rating },
-    comments: { value : comments }
-  } = elements;
-
-  const curDate = (new Date()).getTime();
-
-  const review = {
-    restaurant_id: self.restaurant.id,
-    name,
-    rating,
-    comments,
-    createdAt: curDate,
-    updatedAt: curDate,
-  };
-
+function addReviewComment(review) {
   const ul = document.getElementById('reviews-list');
   const li = createReviewHTML(review);
   li.classList.add('-added');
@@ -271,7 +295,6 @@ function addComment(elements) {
   taskService.saveReview(review, () => {
     fetchRestaurantFromURL(true).then(restaurant => {
       self.restaurant = restaurant;
-      console.log('fill-reviews!!!!', restaurant);
       clearReviewsHtml();
       fillReviewsHTML();
     });

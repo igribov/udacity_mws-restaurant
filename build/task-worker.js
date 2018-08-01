@@ -9,10 +9,8 @@ onmessage = function onmessage(_ref) {
       action = _ref$data.action,
       payload = _ref$data.payload;
 
-  console.log('Message received from main script', action, payload);
 
   switch (action) {
-
     case 'save_review':
       var offlineMessageSend = false;
       var timerId = setInterval(function () {

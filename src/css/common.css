@@ -149,6 +149,7 @@ nav h1 a {
 
 .server-status-bar {
     position: fixed;
+    top: 0;
     height: 30px;
     width: 100%;
     background: #ff0000a1;

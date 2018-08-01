@@ -74,17 +74,20 @@
 
         <div class="form-group">
           <label for="name">Name</label>
-          <input id="name" type="text" required/>
+          <input id="name" type="text"/>
+          <span class="error-message" data-field="name"></span>
         </div>
 
         <div class="form-group">
           <label for="rating-select">Rating</label>
           <div id="rating-select"></div>
+          <span class="error-message" data-field="rating"></span>
         </div>
 
         <div class="form-group">
           <label for="comments">Review</label>
           <textarea id="comments"></textarea>
+          <span class="error-message" data-field="comments"></span>
         </div>
         <div class="form-group">
           <button type="submit">Submit</button>
@@ -92,9 +95,9 @@
       </form>
     </div>
   </section>
+  <div id="server-status-bar" class="server-status-bar -online"></div>
 
 </main>
-
 <!-- End main -->
 
 <!-- Beginning footer -->

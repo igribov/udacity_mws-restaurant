@@ -272,6 +272,20 @@
     text-align: center;
 }
 
+.form > .form-group > .error-message {
+    font-size: 0.7em;
+    color: red;
+    display: none;
+}
+.form > .form-group.has-error > input,
+.form > .form-group.has-error > textarea {
+    border: 1px solid red;
+}
+
+.form > .form-group.has-error > .error-message {
+    display: block;
+}
+
 .form > .form-group {
     margin-bottom: 10px;
     font-size: 1em;

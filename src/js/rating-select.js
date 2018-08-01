@@ -13,9 +13,6 @@ function RatingSelect(selector, options) {
   this.rating.setAttribute('aria-label', options.label);
   this.rating.setAttribute('tabindex', '0');
   this.rating.setAttribute('role', 'radiogroup');
-  this.rating.setAttribute('aria-valuenow', 0);
-  this.rating.setAttribute('aria-valuemin', 0);
-  this.rating.setAttribute('aria-valuemax', options.max);
   this.rating.className = 'rating-select';
 
   for (let i = 1; i <= options.max; i++) {
@@ -44,7 +41,6 @@ function RatingSelect(selector, options) {
 RatingSelect.prototype = {
 
   reset() {
-    console.log('reset');
     this.rating.setAttribute('aria-valuenow', 0);
     this.ratingInput.setAttribute('value', 0);
     this.activeItemIdx = 0;
