@@ -22,6 +22,7 @@ const paths = {
   scripts: [
     'src/js/process.js',
     'src/js/accessibility-select.js',
+    'src/js/task-service.js',
     'src/js/rating-select.js',
     'src/js/main.js',
     'src/js/dbhelper.js',
@@ -32,6 +33,7 @@ const paths = {
     'src/js/restaurant_info.js',
   ],
   sw: ['src/js/sw.js'],
+  taskWorker: ['src/js/task-worker.js'],
   styles: 'src/css/*.css',
   images_src: 'src/img_src/*',
   images: 'src/img/*',
@@ -56,6 +58,10 @@ gulp.task('clean-sw', function () {
   return del(['build/sw.js']);
 });
 
+gulp.task('clean-worker', function () {
+  return del(['build/task-worker.js']);
+});
+
 gulp.task('clean-styles', function () {
   return del(['build/css']);
 });
@@ -75,6 +81,14 @@ gulp.task('clean-data', function () {
 gulp.task('sw', ['clean-sw'], function () {
   return gulp.src(paths.sw)
     .pipe(template({ sw_version: 'v' + new Date().getTime() }))
+    .pipe(babel({
+      presets: ['env']
+    }))
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task('worker', ['clean-worker'], function () {
+  return gulp.src(paths.taskWorker)
     .pipe(babel({
       presets: ['env']
     }))
@@ -185,11 +199,12 @@ gulp.task('data', ['clean-data'], function () {
 gulp.task('watch', function () {
   gulp.watch(paths.scripts, ['sw', 'scripts']);
   gulp.watch(paths.sw, ['sw']);
+  gulp.watch(paths.taskWorker, ['worker']);
   gulp.watch(paths.styles, ['styles']);
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.manifest, ['manifest']);
 });
 
-gulp.task('default', ['scripts','sw', 'styles', 'html', 'manifest', 'data', 'images']);
+gulp.task('default', ['scripts','sw', 'worker', 'styles', 'html', 'manifest', 'data', 'images']);
 
-gulp.task('dev', ['scripts','sw', 'styles', 'html', 'manifest', 'data', 'images', 'watch']);
+gulp.task('dev', ['scripts','sw', 'worker', 'styles', 'html', 'manifest', 'data', 'images', 'watch']);

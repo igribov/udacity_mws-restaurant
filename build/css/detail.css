@@ -125,6 +125,11 @@
     font-size: 1.5em;
 }
 
+#reviews-list .reviews-list-item.-added {
+    -webkit-animation: fadein 2s;
+    -moz-animation: fadein 2s;
+}
+
 #reviews-list li .reviewer-info .reviewer-info__name-date h3 {
     margin: 0;
 }
@@ -436,4 +441,21 @@
         max-width: 1200px;
         margin: auto;
     }
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }

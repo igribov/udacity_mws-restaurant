@@ -164,23 +164,6 @@ class DBHelper {
     });
   }
 
-  static saveReview(review) {
-
-    fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(review),
-      }
-    )
-      .then(data => data.json())
-      .catch(err => {
-        console.log('errr');
-      });
-  }
-
   /**
    * Fetch all neighborhoods with proper error handling.
    */

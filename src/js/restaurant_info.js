@@ -1,11 +1,12 @@
 const DBHelper = require('./dbhelper');
+const TaskService = require('./task-service');
 const process = require('./process');
 const RatingSelect = require('./rating-select');
 
 let restaurant;
 var map;
+const taskService = new TaskService();
 
-createRatingSelect();
 ratingForm();
 
 /**
@@ -201,10 +202,7 @@ function fillBreadcrumb(restaurant=self.restaurant) {
 }
 
 function createRatingSelect() {
-  const select = new RatingSelect('#rating-select', {
-    label: 'Rating',
-    max: 5,
-  });
+
 }
 
 function ratingForm() {
@@ -212,17 +210,44 @@ function ratingForm() {
   if (!form) {
     return;
   }
+
+  const select = new RatingSelect('#rating-select', {
+    label: 'Rating',
+    max: 5,
+  });
+
   form.onsubmit = function(e) {
     e.preventDefault();
-    const {
-      name: { value : name },
-      rating: { value : rating },
-      comments: { value : comments }
-    } = e.target.elements;
-
-    const review = { restaurant_id: self.restaurant.id, name, rating, comments };
-    DBHelper.saveReview(review);
+    const values = e.target.elements;
+    addComment(values);
+    form.reset();
+    select.reset();
   }
+}
+
+function addComment(elements) {
+  const {
+    name: { value : name },
+    rating: { value : rating },
+    comments: { value : comments }
+  } = elements;
+
+  const curDate = (new Date()).getTime();
+
+  const review = {
+    restaurant_id: self.restaurant.id,
+    name,
+    rating,
+    comments,
+    createdAt: curDate,
+    updatedAt: curDate,
+  };
+
+  const ul = document.getElementById('reviews-list');
+  const li = createReviewHTML(review);
+  li.classList.add('-added');
+  ul.appendChild(li);
+  taskService.saveReview(review);
 }
 
 /**

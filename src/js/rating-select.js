@@ -1,9 +1,9 @@
-
 function RatingSelect(selector, options) {
   options = options || {};
   options.max = options.max || 5;
 
   this.rating = document.querySelector(selector);
+
   this.starList = [];
 
   if (!this.rating) {
@@ -42,6 +42,19 @@ function RatingSelect(selector, options) {
 }
 
 RatingSelect.prototype = {
+
+  reset() {
+    console.log('reset');
+    this.rating.setAttribute('aria-valuenow', 0);
+    this.ratingInput.setAttribute('value', 0);
+    this.activeItemIdx = 0;
+    this.starList.forEach(el => {
+      el.classList.remove('rating-select__item--checked');
+      el.setAttribute('aria-checked', false);
+      el.setAttribute('tabindex', -1);
+    });
+    this.starList[0].setAttribute('tabindex', 0);
+  },
 
   onRatingElementClick(e) {
     const clickedStarIndex = this.starList.indexOf(e.target);
