@@ -7,6 +7,12 @@ let restaurant;
 var map;
 const taskService = new TaskService();
 
+const statusBar = createStatusBar();
+
+document.addEventListener('serverstatus', function (e) {
+  statusBar.classList.toggle('-online', e.detail.online);
+}, false);
+
 ratingForm();
 
 /**
@@ -33,11 +39,19 @@ window.initMap = () => {
   });
 };
 
+function createStatusBar() {
+  const bar = document.createElement('div');
+  bar.className = 'server-status-bar -online';
+  document.body.appendChild(bar);
+
+  return bar;
+}
+
 /**
  * Get current restaurant from page URL.
  */
-function fetchRestaurantFromURL() {
-  if (self.restaurant) { // restaurant already fetched!
+function fetchRestaurantFromURL(force = false) {
+  if (!force && self.restaurant) { // restaurant already fetched!
     return self.restaurant;
   }
   const id = getParameterByName('id');
@@ -110,6 +124,7 @@ function fillRestaurantHoursHTML(operatingHours = self.restaurant.operating_hour
 function fillReviewsHTML(reviews = self.restaurant.reviews) {
 
   const container = document.getElementById('reviews-container');
+  const ul = document.getElementById('reviews-list');
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -117,11 +132,17 @@ function fillReviewsHTML(reviews = self.restaurant.reviews) {
     container.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById('reviews-list');
+
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
-  container.appendChild(ul);
+}
+
+function clearReviewsHtml() {
+  Array.prototype.forEach.call(
+    document.querySelectorAll('.reviews-list-item'),
+    li => li.remove()
+  );
 }
 
 /**
@@ -247,7 +268,14 @@ function addComment(elements) {
   const li = createReviewHTML(review);
   li.classList.add('-added');
   ul.appendChild(li);
-  taskService.saveReview(review);
+  taskService.saveReview(review, () => {
+    fetchRestaurantFromURL(true).then(restaurant => {
+      self.restaurant = restaurant;
+      console.log('fill-reviews!!!!', restaurant);
+      clearReviewsHtml();
+      fillReviewsHTML();
+    });
+  });
 }
 
 /**

@@ -146,3 +146,22 @@ nav h1 a {
     width: 100%;
     background-color: #ccc;
 }
+
+.server-status-bar {
+    position: fixed;
+    height: 30px;
+    width: 100%;
+    background: #ff0000a1;
+    z-index: 9999;
+}
+.server-status-bar:after {
+    content: 'Server is offline';
+    text-align: center;
+    color: white;
+    display: block;
+    margin: 6px;
+}
+
+.server-status-bar.-online, .server-status-bar.-online:after {
+    display: none;
+}

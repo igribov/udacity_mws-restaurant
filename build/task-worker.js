@@ -5,6 +5,7 @@ var DATABASE_URL = 'http://localhost:' + port;
 
 onmessage = function onmessage(_ref) {
   var _ref$data = _ref.data,
+      id = _ref$data.id,
       action = _ref$data.action,
       payload = _ref$data.payload;
 
@@ -13,12 +14,20 @@ onmessage = function onmessage(_ref) {
   switch (action) {
 
     case 'save_review':
+      var offlineMessageSend = false;
       var timerId = setInterval(function () {
         saveReview(payload).then(function (result) {
           clearInterval(timerId);
-          postMessage({ action: action, result: result });
+          if (offlineMessageSend) {
+            postMessage({ action: 'online' });
+          }
+          postMessage({ id: id, action: action, result: result });
         }).catch(function (err) {
           console.log('[worker::] try to save review.');
+          if (!offlineMessageSend) {
+            offlineMessageSend = true;
+            postMessage({ action: 'offline' });
+          }
         });
       }, 1000);
       break;
