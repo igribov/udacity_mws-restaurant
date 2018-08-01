@@ -36,7 +36,7 @@ function RatingSelect(selector, options) {
   this.ratingInput = document.createElement('input');
   this.ratingInput.setAttribute('value', 0);
   this.ratingInput.setAttribute('name', options.inputName || 'rating');
-  this.ratingInput.setAttribute('id', options.inputName || 'review-rating');
+  this.ratingInput.setAttribute('id', options.inputName || 'rating');
   this.ratingInput.setAttribute('type', 'hidden');
   this.rating.append(this.ratingInput);
 }

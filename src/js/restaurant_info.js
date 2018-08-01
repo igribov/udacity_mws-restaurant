@@ -214,7 +214,14 @@ function ratingForm() {
   }
   form.onsubmit = function(e) {
     e.preventDefault();
-    console.log('FOrm submited', e.target.elements);
+    const {
+      name: { value : name },
+      rating: { value : rating },
+      comments: { value : comments }
+    } = e.target.elements;
+
+    const review = { restaurant_id: self.restaurant.id, name, rating, comments };
+    DBHelper.saveReview(review);
   }
 }
 

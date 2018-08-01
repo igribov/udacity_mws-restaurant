@@ -44,7 +44,7 @@ class DBHelper {
     return Promise.all([
       this.fetchRestaurant(id),
       this.fetchRestaurantReviews(id)
-    ]).then(([ restaurant, reviews ]) => {
+    ]).then(([restaurant, reviews]) => {
       restaurant.reviews = reviews;
       return this.putRestaurantIntoIndexedDb(restaurant).then(() => restaurant);
     }).catch(err => {
@@ -135,7 +135,6 @@ class DBHelper {
     DBHelper.fetchRestaurants().then(restaurants => {
       return restaurants.filter(r => r.cuisine_type == cuisine);
     });
-
   }
 
   /**
@@ -152,7 +151,6 @@ class DBHelper {
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
-
     return DBHelper.fetchRestaurants().then(restaurants => {
       let results = restaurants;
 
@@ -164,6 +162,23 @@ class DBHelper {
       }
       return results;
     });
+  }
+
+  static saveReview(review) {
+
+    fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(review),
+      }
+    )
+      .then(data => data.json())
+      .catch(err => {
+        console.log('errr');
+      });
   }
 
   /**
