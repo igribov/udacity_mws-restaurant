@@ -128,6 +128,7 @@
 #reviews-list .reviews-list-item.-added {
     -webkit-animation: fadein 2s;
     -moz-animation: fadein 2s;
+    opacity: .4;
 }
 
 #reviews-list li .reviewer-info .reviewer-info__name-date h3 {
@@ -289,6 +290,7 @@
 .form > .form-group {
     margin-bottom: 10px;
     font-size: 1em;
+}
 }
 
 .form > .form-group > input,
@@ -459,17 +461,17 @@
 
 @keyframes fadein {
     from { opacity: 0; }
-    to   { opacity: 1; }
+    to   { opacity: .4; }
 }
 
 /* Firefox < 16 */
 @-moz-keyframes fadein {
     from { opacity: 0; }
-    to   { opacity: 1; }
+    to   { opacity: .4; }
 }
 
 /* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadein {
     from { opacity: 0; }
-    to   { opacity: 1; }
+    to   { opacity: .4; }
 }
