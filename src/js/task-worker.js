@@ -54,7 +54,8 @@ function saveReview(review) {
   ).then(data => data.json())
 }
 
-function setFavorite({ restaurantId, isFavorite = true }) {
+function setFavorite({ restaurantId, isFavorite }) {
+
   return fetch(`${DATABASE_URL}/restaurants/${restaurantId}/?is_favorite=${isFavorite}`, {
       method: 'PUT',
       headers: {

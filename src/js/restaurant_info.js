@@ -30,9 +30,10 @@ window.initMap = () => {
 };
 
 fetchRestaurantFromURL().then(restaurant => {
+  restaurant.is_favorite = JSON.parse(restaurant.is_favorite);
   self.restaurant = restaurant;
-  addFavoriteButton();
   fillRestaurantHTML();
+  addFavoriteButton();
 
   fillBreadcrumb();
   DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
@@ -303,17 +304,24 @@ function addReviewComment(review) {
 
 function addFavoriteButton() {
   const button = document.getElementById('restaurant-like');
-  button.classList.toggle('card-like--liked', self.restaurant.is_favorite);
+  console.log('addFavoriteButton--:', self.restaurant.is_favorite);
+  if (self.restaurant.is_favorite) {
+    button.classList.add('card-like--liked');
+  }
 
   button.onclick = function () {
     this.setAttribute('disabled', 'disabled');
-    self.restaurant.is_favorite = !self.restaurant.is_favorite;
-    this.classList.toggle('card-like--liked', !self.restaurant.is_favorite);
 
-    taskService.setFavorite(
+    console.log(self.restaurant.is_favorite);
+
+    this.classList.toggle('card-like--liked');
+
+    taskService.toggleFavorite(
       self.restaurant,
-      !self.restaurant.is_favorite,
-      () => this.removeAttribute('disabled')
+      () => {
+        this.removeAttribute('disabled');
+        fetchRestaurantFromURL(true); // update in indexedDb
+      }
     );
   }
 }

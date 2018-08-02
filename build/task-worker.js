@@ -60,8 +60,8 @@ function saveReview(review) {
 
 function setFavorite(_ref2) {
   var restaurantId = _ref2.restaurantId,
-      _ref2$isFavorite = _ref2.isFavorite,
-      isFavorite = _ref2$isFavorite === undefined ? true : _ref2$isFavorite;
+      isFavorite = _ref2.isFavorite;
+
 
   return fetch(DATABASE_URL + '/restaurants/' + restaurantId + '/?is_favorite=' + isFavorite, {
     method: 'PUT',

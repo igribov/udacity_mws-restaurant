@@ -49,7 +49,7 @@ TaskService.prototype = {
     this.addCallback(callback);
   },
 
-  setFavorite(restaurant, isFavorite, callback) {
+  toggleFavorite(restaurant, callback) {
     this.beforeTaskAdd();
 
     // then send data to API
@@ -59,7 +59,7 @@ TaskService.prototype = {
       payload: {
         id: this.jobId,
         restaurantId: restaurant.id,
-        isFavorite,
+        isFavorite: !JSON.parse(self.restaurant.is_favorite),
       }
     });
 
