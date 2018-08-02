@@ -200,8 +200,8 @@ gulp.task('watch', function () {
   gulp.watch(paths.scripts, ['sw', 'scripts']);
   gulp.watch(paths.sw, ['sw']);
   gulp.watch(paths.taskWorker, ['worker']);
-  gulp.watch(paths.styles, ['styles']);
-  gulp.watch(paths.html, ['html']);
+  gulp.watch(paths.styles, ['sw', 'styles']);
+  gulp.watch(paths.html, ['sw', 'html']);
   gulp.watch(paths.manifest, ['manifest']);
 });
 

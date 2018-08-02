@@ -20,6 +20,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
   })
 });
 
+function toggleMap() {
+  const map = document.getElementById('map');
+  if (map.style.display === 'none'){
+    this.setAttribute('aria-label', 'Close Google Map');
+    map.style.display = 'block'
+  } else {
+    this.setAttribute('aria-label', 'Open Google Map');
+    map.style.display = 'none'
+  }
+}
+
+document.querySelector('#map-actions .toggle-map').onclick = toggleMap;
+
 /**
  * Set neighborhoods HTML.
  */
@@ -77,7 +90,6 @@ function fillCuisinesHTML(cuisines = self.cuisines) {
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-
   let loc = {
     lat: 40.722216,
     lng: -73.987501
@@ -91,8 +103,9 @@ window.initMap = () => {
   window.addEventListener('scroll', () => {
     if (!scrolled) {
       scrolled = true;
-      // updateRestaurants();
     }
+    const hiddenItems = document.querySelectorAll('#restaurants-list li.hidden');
+    Array.prototype.forEach.call(hiddenItems, el => el.classList.remove('hidden'));
   });
 
   setTimeout(function() {
@@ -141,8 +154,8 @@ function resetRestaurants(restaurants) {
 function fillRestaurantsHTML(restaurants = self.restaurants) {
 
   const ul = document.getElementById('restaurants-list');
-  restaurants.forEach(restaurant => {
-    ul.append(createRestaurantHTML(restaurant));
+  restaurants.forEach((restaurant, i) => {
+    ul.append(createRestaurantHTML(restaurant, i));
   });
   addMarkersToMap(restaurants);
 }
@@ -150,9 +163,12 @@ function fillRestaurantsHTML(restaurants = self.restaurants) {
 /**
  * Create restaurant HTML.
  */
-function createRestaurantHTML(restaurant) {
+function createRestaurantHTML(restaurant, index) {
   const li = document.createElement('li');
   li.setAttribute('tabindex', 0);
+  if (index > 1) {
+    li.className = 'hidden';
+  }
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';

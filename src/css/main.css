@@ -80,11 +80,13 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
     text-align: center;
     text-transform: uppercase;
 }
+
 #footer a {
     color: #1c1c1c;
 }
 
 /* ====================== Navigation ====================== */
+
 nav {
     width: 100%;
     min-height: 100px;
@@ -146,7 +148,6 @@ nav h1 a {
     width: 100%;
     background-color: #ccc;
 }
-
 
 /* ====================== Restaurant Details ====================== */
 .inside {
@@ -327,11 +328,11 @@ nav h1 a {
         display: inline-block;
         width: 45%;
     }
+
     .custom-select__list.open {
         min-width: 38%;
     }
 }
-
 
 @media screen and (min-width: 801px) {
     .inside #restaurant-container .restaurant-card {
@@ -346,7 +347,6 @@ nav h1 a {
         height: 80%;
     }
 }
-
 
 @media screen and (min-width: 458px) {
     nav h1 {

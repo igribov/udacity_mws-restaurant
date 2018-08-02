@@ -29,6 +29,17 @@
     font-size: 1em;
 }
 
+#map-actions {
+    padding: 10px;
+    text-align: right;
+}
+
+#map-actions .toggle-map {
+    font-size: 2em;
+    border: 1px solid #3397DB;
+    border-radius: 5px;
+}
+
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
     min-height: 300px;
@@ -44,6 +55,9 @@
 .restaurants-search-result {
     text-align: center;
     width: 100%;
+}
+#restaurants-list li.hidden {
+    display: none;
 }
 
 #restaurants-list li {

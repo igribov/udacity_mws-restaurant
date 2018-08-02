@@ -31,7 +31,7 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
       caches.match(event.request,{ignoreSearch: true}).then(function(resp) {
         if (event.request.method !== 'GET') {
-          return;
+        return;
         }
         if (resp) {
           console.log('GET_FROM_CACHE -> ', event.request.url);

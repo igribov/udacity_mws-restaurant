@@ -1,6 +1,6 @@
 'use strict';
 
-var CACHE_VER = 'v1533134772611';
+var CACHE_VER = 'v1533197039158';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(CACHE_VER).then(function (cache) {
