@@ -189,10 +189,16 @@ nav h1 a {
     cursor: pointer;
 }
 .card-like:hover {
-
+    border-color: #f58500;
+    color: #f58500;
 }
 
-.card-like:hover, .card-like--liked {
+.card-like--liked {
     background: #f58500;
     color: #ffffff;
+}
+.card-like--liked:hover {
+    background: #ffffff;
+    color: #f0f0f0;
+    border-color: #f0f0f0;
 }

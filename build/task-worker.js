@@ -9,27 +9,40 @@ onmessage = function onmessage(_ref) {
       action = _ref$data.action,
       payload = _ref$data.payload;
 
+  var offlineMessageSend = false;
+  var timerId = void 0;
+  var runMethod = void 0;
 
   switch (action) {
+
     case 'save_review':
-      var offlineMessageSend = false;
-      var timerId = setInterval(function () {
-        saveReview(payload).then(function (result) {
-          clearInterval(timerId);
-          if (offlineMessageSend) {
-            postMessage({ action: 'online' });
-          }
-          postMessage({ id: id, action: action, result: result });
-        }).catch(function (err) {
-          console.log('[worker::] try to save review.');
-          if (!offlineMessageSend) {
-            offlineMessageSend = true;
-            postMessage({ action: 'offline' });
-          }
-        });
-      }, 1000);
+      runMethod = saveReview;
+      break;
+
+    case 'set_favorite':
+      runMethod = setFavorite;
       break;
   }
+
+  if (!runMethod) {
+    return;
+  }
+
+  timerId = setInterval(function () {
+    runMethod(payload).then(function (result) {
+      clearInterval(timerId);
+      if (offlineMessageSend) {
+        postMessage({ action: 'online' });
+      }
+      postMessage({ id: id, action: action, result: result });
+    }).catch(function (err) {
+      console.log('[worker::] process loop');
+      if (!offlineMessageSend) {
+        offlineMessageSend = true;
+        postMessage({ action: 'offline' });
+      }
+    });
+  }, 1000);
 };
 
 function saveReview(review) {
@@ -40,6 +53,22 @@ function saveReview(review) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(review)
+  }).then(function (data) {
+    return data.json();
+  });
+}
+
+function setFavorite(_ref2) {
+  var restaurantId = _ref2.restaurantId,
+      _ref2$isFavorite = _ref2.isFavorite,
+      isFavorite = _ref2$isFavorite === undefined ? true : _ref2$isFavorite;
+
+  return fetch(DATABASE_URL + '/restaurants/' + restaurantId + '/?is_favorite=' + isFavorite, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
   }).then(function (data) {
     return data.json();
   });

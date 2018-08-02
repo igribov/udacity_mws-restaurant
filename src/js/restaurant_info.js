@@ -31,7 +31,7 @@ window.initMap = () => {
 
 fetchRestaurantFromURL().then(restaurant => {
   self.restaurant = restaurant;
-
+  addFavoriteButton();
   fillRestaurantHTML();
 
   fillBreadcrumb();
@@ -210,7 +210,7 @@ function createRatingStarsBlock(ratingValue) {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-function fillBreadcrumb(restaurant=self.restaurant) {
+function fillBreadcrumb(restaurant = self.restaurant) {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
@@ -232,12 +232,12 @@ function ratingForm() {
     max: 5,
   });
 
-  form.onsubmit = function(e) {
+  form.onsubmit = function (e) {
     e.preventDefault();
     const {
-      name: { value : name },
-      rating: { value : rating },
-      comments: { value : comments }
+      name: {value: name},
+      rating: {value: rating},
+      comments: {value: comments}
     } = e.target.elements;
 
     Array.prototype.map.call(
@@ -301,10 +301,27 @@ function addReviewComment(review) {
   });
 }
 
+function addFavoriteButton() {
+  const button = document.getElementById('restaurant-like');
+  button.classList.toggle('card-like--liked', self.restaurant.is_favorite);
+
+  button.onclick = function () {
+    this.setAttribute('disabled', 'disabled');
+    self.restaurant.is_favorite = !self.restaurant.is_favorite;
+    this.classList.toggle('card-like--liked', !self.restaurant.is_favorite);
+
+    taskService.setFavorite(
+      self.restaurant,
+      !self.restaurant.is_favorite,
+      () => this.removeAttribute('disabled')
+    );
+  }
+}
+
 /**
  * Get a parameter by name from page URL.
  */
-function getParameterByName (name, url) {
+function getParameterByName(name, url) {
   if (!url)
     url = window.location.href;
   name = name.replace(/[\[\]]/g, '\\$&');
