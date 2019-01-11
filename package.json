@@ -16,20 +16,23 @@
   "devDependencies": {
     "babelify": "^8.0.0",
     "browserify": "^16.2.2",
+    "cross-env": "^5.2.0",
     "del": "^3.0.0",
     "gulp-clean-css": "^3.9.3",
     "gulp-image-resize": "^0.13.0",
     "gulp-imagemin": "^4.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-template": "^5.0.0",
+    "http-server": "^0.11.1",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   },
   "scripts": {
+    "start": "node ./node_modules/http-server/bin/http-server ./build -p 8080 -o",
     "build": "node ./node_modules/gulp/bin/gulp.js",
     "build-watch": "node ./node_modules/gulp/bin/gulp.js dev",
-    "dev": "NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js dev",
-    "images": "NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js img-resize"
+    "dev": "cross-env NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js dev",
+    "images": "cross-env NODE_ENV=dev node ./node_modules/gulp/bin/gulp.js img-resize"
   },
   "repository": {
     "type": "git",

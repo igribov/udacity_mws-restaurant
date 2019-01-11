@@ -1,6 +1,6 @@
 'use strict';
 
-var CACHE_VER = 'v1533220486418';
+var CACHE_VER = 'v1547198418730';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(CACHE_VER).then(function (cache) {
@@ -12,7 +12,10 @@ self.addEventListener('install', function (event) {
 
 self.addEventListener('fetch', function (event) {
   var requestUrl = new URL(event.request.url);
-
+  // todo fix this condition (https://stackoverflow.com/questions/48463483/what-causes-a-failed-to-execute-fetch-on-serviceworkerglobalscope-only-if)
+  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+    return;
+  }
   if (requestUrl.host !== 'localhost:8888') {
     event.respondWith(fetch(event.request));
   } else if (requestUrl.host === 'localhost:1337') {

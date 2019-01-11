@@ -12,8 +12,7 @@ var scrolled = false;
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {
-  console.log('DOMContentLoaded');
+document.addEventListener('DOMContentLoaded', () => {
   process.registerServiceWorker();
   fetchNeighborhoodsAndCuisines().then((restaurants) => {
     fillRestaurantsHTML(restaurants);

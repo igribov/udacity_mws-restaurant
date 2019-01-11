@@ -10,7 +10,7 @@ function registerServiceWorker() {
       return;
     }
     if (reg.active) {
-      console.log('There is an an active service worker');
+      console.log('There is an active service worker');
     }
 
     if (reg.waiting) {
@@ -69,7 +69,7 @@ function sendMessageToServiceWorker(msg, worker) {
   return new Promise(function (resolve, reject) {
     var msgChan = new MessageChannel();
 
-    // Handler for recieving message reply from service worker
+    // Handler for receiving message reply from service worker
     msgChan.port1.onmessage = function (event) {
       if (event.data.error) {
         reject(event.data.error);
