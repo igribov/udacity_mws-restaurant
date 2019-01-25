@@ -1,1 +1,19 @@
-.rating-select__item{display:inline-block;cursor:pointer;margin:0 2%;font-size:2em;color:#f4911f}.rating-select__item:after{content:'☆'}.rating-select__item--checked:after{content:'★'}
+.rating-select {
+
+}
+
+.rating-select__item {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 2%;
+    font-size: 2em;
+    color: #f4911f;
+}
+
+.rating-select__item:after {
+    content: '☆';
+}
+
+.rating-select__item--checked:after {
+    content: '★';
+}

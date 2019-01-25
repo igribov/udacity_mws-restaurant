@@ -1,6 +1,7 @@
 const DBHelper = require('./dbhelper');
 const AccessibilitySelect = require('./accessibility-select');
 const process = require('./process');
+const { zip, zipReduce } = require('./helpers');
 
 let restaurants,
   neighborhoods,
@@ -9,6 +10,13 @@ var map;
 var markers = [];
 var scrolled = false;
 
+const showHiddenRestaurants = () => {
+  if (!scrolled) {
+    scrolled = true;
+  }
+  const hiddenItems = document.querySelectorAll('#restaurants-list li.hidden');
+  Array.prototype.forEach.call(hiddenItems, el => el.classList.remove('hidden'));
+};
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -99,13 +107,7 @@ window.initMap = () => {
     scrollwheel: false
   });
 
-  window.addEventListener('scroll', () => {
-    if (!scrolled) {
-      scrolled = true;
-    }
-    const hiddenItems = document.querySelectorAll('#restaurants-list li.hidden');
-    Array.prototype.forEach.call(hiddenItems, el => el.classList.remove('hidden'));
-  });
+  window.addEventListener('scroll', showHiddenRestaurants);
 
   setTimeout(function() {
     document.getElementById('map').querySelector('iframe').setAttribute('title', 'Google map');
@@ -151,29 +153,68 @@ function resetRestaurants(restaurants) {
  * Create all restaurants HTML and add them to the webpage.
  */
 function fillRestaurantsHTML(restaurants = self.restaurants) {
-
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach((restaurant, i) => {
     ul.append(createRestaurantHTML(restaurant, i));
   });
-  addMarkersToMap(restaurants);
+  const addMarkers = () => addMarkersToMap(restaurants);
+  setTimeout(addMarkers, 500);
 }
 
+function createImage(imgUrl, alt) {
+  const image = document.createElement('img');
+  image.className = 'restaurant-img';
+  image.src = imgUrl;
+  image.setAttribute('alt', alt);
+  return image;
+}
+
+function createResponsiveImage(imgUrl, alt, restaurant) {
+  const imgUrls = [
+    DBHelper.imageUrlForRestaurant(restaurant, 'small'),
+    DBHelper.imageUrlForRestaurant(restaurant, 'medium'),
+    DBHelper.imageUrlForRestaurant(restaurant, 'large'),
+    DBHelper.imageUrlForRestaurant(restaurant, 'small'),
+  ];
+
+  const picture = document.createElement('picture');
+  picture.className = 'restaurant-img';
+  const image = document.createElement('img');
+  image.className = 'restaurant-img';
+  image.setAttribute('src', imgUrl);
+  image.setAttribute('alt', alt);
+  let sources = zipReduce(
+      imgUrls, 
+      ['(max-width: 400px)', '(min-width: 701px) and (max-width: 1000px)', '(min-width: 500px) and (max-width: 700px)', '(mim-width: 1001px)'],
+      (srcset, media, result) => {
+        const source = document.createElement('source');
+        source.setAttribute('media', media);
+        source.setAttribute('srcset', srcset);
+        return [ ...result, source];
+      },
+      []
+  );
+  sources.forEach(source => {
+    picture.append(source);
+  });
+  picture.append(image);
+  return picture;
+}
 /**
  * Create restaurant HTML.
  */
 function createRestaurantHTML(restaurant, index) {
   const li = document.createElement('li');
   li.setAttribute('tabindex', 0);
-  if (index > 1) {
+  if (index > 3) {
     li.className = 'hidden';
   }
-
-  const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.setAttribute('alt', `An image from the restaurant ${restaurant.name}`);
-  li.append(image);
+  const picture = createResponsiveImage(
+      DBHelper.imageUrlForRestaurant(restaurant),
+      `An image from the restaurant ${restaurant.name}`,
+      restaurant
+  );
+  li.append(picture);
 
   const infoBlock = document.createElement('div');
   infoBlock.className = 'restaurant-info';
