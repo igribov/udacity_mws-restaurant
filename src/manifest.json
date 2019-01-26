@@ -1,16 +1,16 @@
 {
-  "short_name": "Restaurant Reviews",
+  "short_name": "RestReviews",
   "name": "Restaurant Reviews",
   "start_url": "/",
   "icons": [
     {
-      "src": "/img/1_small.jpg",
-      "type": "image/jpg",
+      "src": "/img/rr-icon-small.png",
+      "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/img/1_small.jpg",
-      "type": "image/jpg",
+      "src": "/img/rr-icon-small.png",
+      "type": "image/png",
       "sizes": "512x512"
     }
   ],
